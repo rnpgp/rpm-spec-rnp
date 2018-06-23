@@ -1,6 +1,8 @@
 #!/bin/bash
-
+set -x
 # See https://github.com/riboseinc/rnp/blob/master/doc/PACKAGING.md
+
+VERSION=0.9.0
 
 . /usr/local/rpm-specs/setup_env.sh
 
@@ -30,11 +32,11 @@ ln -s /usr/bin/cpack3 /usr/bin/cpack
 
 rpmdev-setuptree
 cd ~/rpmbuild/SOURCES/
-git clone https://github.com/riboseinc/rnp/ .
 
-# rpmbuild --define "_topdir <path_to_build_dir>" --rebuild <SRPM_file_name>
+curl -LO https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz
+tar -xzf v${VERSION}.tar.gz
 
-cd ~/rpmbuild/SOURCES/rnp
+cd ~/rpmbuild/SOURCES/rnp-${VERSION}
 
 cmake -DBUILD_SHARED_LIBS=on -DBUILD_TESTING=off -DCPACK_GENERATOR=RPM .
 cpack -G RPM --config ./CPackSourceConfig.cmake
