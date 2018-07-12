@@ -2,8 +2,6 @@
 set -x
 # See https://github.com/riboseinc/rnp/blob/master/doc/PACKAGING.md
 
-VERSION=0.9.0
-
 . /usr/local/rpm-specs/setup_env.sh
 
 # build_cmake_package() {
@@ -25,18 +23,28 @@ VERSION=0.9.0
 #     }
 # }
 
-yum -y install bzip2-devel zlib-devel libcmocka-devel libstdc++-static
-yum -y install botan2-devel json-c-devel
+yum -y install bzip2-devel zlib-devel libcmocka-devel libstdc++-static \
+	botan2-devel json-c-devel
 ln -s /usr/bin/cmake3 /usr/bin/cmake
 ln -s /usr/bin/cpack3 /usr/bin/cpack
 
 rpmdev-setuptree
 cd ~/rpmbuild/SOURCES/
 
-curl -LO https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz
-tar -xzf v${VERSION}.tar.gz
+# $SOURCE can be 'git' or whatever.
+if [[ "${SOURCE}" = git ]]; then
+	SOURCE_PATH=rnp${RNP_VERSION:+-${RNP_VERSION}}
+	git clone https://github.com/riboseinc/rnp "${SOURCE_PATH}"
+	cd ~/rpmbuild/SOURCES/${SOURCE_PATH}
+else
+	# $VERSION is only for downloading the package archive from a URL.
+	VERSION=${VERSION:-0.9.0}
 
-cd ~/rpmbuild/SOURCES/rnp-${VERSION}
+	curl -LO https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz
+	tar -xzf v${VERSION}.tar.gz
+
+	cd ~/rpmbuild/SOURCES/rnp-${VERSION}
+fi
 
 cmake -DBUILD_SHARED_LIBS=on -DBUILD_TESTING=off -DCPACK_GENERATOR=RPM .
 cpack -G RPM --config ./CPackSourceConfig.cmake
