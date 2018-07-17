@@ -38,7 +38,7 @@ if [[ "${SOURCE}" = git ]]; then
 	cd ~/rpmbuild/SOURCES/${SOURCE_PATH}
 else
 	# $VERSION is only for downloading the package archive from a URL.
-	VERSION=${VERSION:-0.9.0}
+	VERSION=${VERSION:-0.9.1}
 
 	curl -LO https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz
 	tar -xzf v${VERSION}.tar.gz
