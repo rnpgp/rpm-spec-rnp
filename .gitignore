@@ -1,0 +1,9 @@
+.DS_Store
+*.rpm
+*.rpm.*
+dependencies/
+results/
+srpm-unpacked/
+srpm/
+upstream-unpacked/
+upstream/

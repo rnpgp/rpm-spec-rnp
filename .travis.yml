@@ -1,0 +1,21 @@
+sudo: required
+
+language: generic
+
+git:
+  depth: 1
+
+services:
+  - docker
+
+before_install:
+  - docker pull centos:7
+
+script:
+  - docker run
+      --env CI=true
+      --rm
+      --volume $PWD/common:/usr/local/rpm-specs
+      --volume $PWD:/usr/local/rpm-specs/package
+      --workdir /usr/local/rpm-specs/package
+      centos:7 ./prepare.sh
