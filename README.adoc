@@ -1,6 +1,6 @@
-= Ribose RPM Spec for NAME
+= Ribose RPM Spec for rnp
 
-image:https://img.shields.io/travis/riboseinc/rpm-spec-NAME/master.svg[Build Status (Travis CI), link=https://travis-ci.org/riboseinc/rpm-spec-NAME]
+image:https://img.shields.io/travis/riboseinc/rpm-spec-rnp/master.svg[Build Status (Travis CI), link=https://travis-ci.org/riboseinc/rpm-spec-rnp]
 
 == Introduction
 
