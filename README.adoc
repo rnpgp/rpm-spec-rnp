@@ -1,0 +1,11 @@
+= Ribose RPM Spec for NAME
+
+image:https://img.shields.io/travis/riboseinc/rpm-spec-NAME/master.svg[Build Status (Travis CI), link=https://travis-ci.org/riboseinc/rpm-spec-NAME]
+
+== Introduction
+
+This repository hosts the RPM spec & related Docker files for building the RPM
+package.
+
+It uses code from https://github.com/riboseinc/rpm-specs[`rpm-specs`]
+(added as a Git submodule).
