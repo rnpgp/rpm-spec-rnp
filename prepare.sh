@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -ex
 # See https://github.com/riboseinc/rnp/blob/master/doc/PACKAGING.md
 
 . /usr/local/rpm-specs/setup_env.sh
