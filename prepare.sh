@@ -2,6 +2,7 @@
 set -ex
 # See https://github.com/riboseinc/rnp/blob/master/doc/PACKAGING.md
 
+# shellcheck disable=SC1091
 . /usr/local/rpm-specs/setup_env.sh
 
 # build_cmake_package() {
@@ -35,26 +36,26 @@ cd ~/rpmbuild/SOURCES/
 if [[ "${SOURCE}" = git ]]; then
 	SOURCE_PATH=rnp${RNP_VERSION:+-${RNP_VERSION}}
 	git clone https://github.com/riboseinc/rnp "${SOURCE_PATH}"
-	cd ~/rpmbuild/SOURCES/${SOURCE_PATH}
+	cd ~/"rpmbuild/SOURCES/${SOURCE_PATH}"
 else
 	# $VERSION is only for downloading the package archive from a URL.
 	VERSION=${VERSION:-0.9.1}
 
-	curl -LO https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz
-	tar -xzf v${VERSION}.tar.gz
+	curl -LO "https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz"
+	tar -xzf "v${VERSION}.tar.gz"
 
-	cd ~/rpmbuild/SOURCES/rnp-${VERSION}
+	cd ~/"rpmbuild/SOURCES/rnp-${VERSION}"
 fi
 
 cmake -DBUILD_SHARED_LIBS=on -DBUILD_TESTING=off -DCPACK_GENERATOR=RPM .
 cpack -G RPM --config ./CPackSourceConfig.cmake
 make package
 
-mv *.src.rpm ~/rpmbuild/SRPMS/
+mv ./*.src.rpm ~/rpmbuild/SRPMS/
 # mkdir -p ~/rpmbuild/RPMS/noarch/
 # mv *.noarch.rpm ~/rpmbuild/RPMS/noarch/
 mkdir -p ~/rpmbuild/RPMS/x86_64/
-mv *.x86_64.rpm ~/rpmbuild/RPMS/x86_64/
+mv ./*.x86_64.rpm ~/rpmbuild/RPMS/x86_64/
 
 yum install -y ~/rpmbuild/RPMS/x86_64/*.rpm
 
