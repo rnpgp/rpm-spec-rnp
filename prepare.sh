@@ -40,7 +40,6 @@ if [[ "${SOURCE}" = git ]]; then
 else
 	# $VERSION is only for downloading the package archive from a URL.
         if [ -z "$VERSION" ]; then
-          echo "VERSION NOT SET"
           release_data=$(curl -s -X GET                       \
             -H "Content-Type: application/json"               \
             -H "Accept: application/json"                     \
@@ -48,8 +47,6 @@ else
             | jq .[0]
           )
           VERSION=$(echo "$release_data" | jq -r .name | cut -c 2-)
-        else
-          echo "VERSION IS SET: ${VERSION}"
         fi
 
 	curl -LO "https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz"
