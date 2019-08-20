@@ -35,7 +35,7 @@ cd ~/rpmbuild/SOURCES/
 # $SOURCE can be 'git' or whatever.
 if [[ "${SOURCE}" = git ]]; then
 	SOURCE_PATH=rnp${RNP_VERSION:+-${RNP_VERSION}}
-	git clone https://github.com/riboseinc/rnp "${SOURCE_PATH}"
+	git clone https://github.com/rnpgp/rnp "${SOURCE_PATH}"
 	cd ~/"rpmbuild/SOURCES/${SOURCE_PATH}"
 else
 	# $VERSION is only for downloading the package archive from a URL.
@@ -43,13 +43,13 @@ else
           release_data=$(curl -s -X GET                       \
             -H "Content-Type: application/json"               \
             -H "Accept: application/json"                     \
-            https://api.github.com/repos/riboseinc/rnp/tags   \
+            https://api.github.com/repos/rnpgp/rnp/tags   \
             | jq .[0]
           )
           VERSION=$(echo "$release_data" | jq -r .name | cut -c 2-)
         fi
 
-	curl -LO "https://github.com/riboseinc/rnp/archive/v${VERSION}.tar.gz"
+	curl -LO "https://github.com/rnpgp/rnp/archive/v${VERSION}.tar.gz"
 	tar -xzf "v${VERSION}.tar.gz"
 
 	cd ~/"rpmbuild/SOURCES/rnp-${VERSION}"
