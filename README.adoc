@@ -1,11 +1,9 @@
 = Ribose RPM Spec for rnp
 
-image:https://img.shields.io/travis/rnpgp/rpm-spec-rnp/master.svg[Build Status (Travis CI), link=https://travis-ci.org/riboseinc/rpm-spec-rnp]
+image:https://gitlab.com/ribose/rpm-spec/rpm-spec-rnp/badges/master/pipeline.svg[Build Status (GitLab CI), link=https://gitlab.com/ribose/rpm-spec/rpm-spec-rnp/commits/master]
 
 == Introduction
 
 This repository hosts the RPM spec & related Docker files for building the RPM
 package.
 
-It uses code from https://github.com/riboseinc/rpm-specs[`rpm-specs`]
-(added as a Git submodule).
