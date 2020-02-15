@@ -1,0 +1,26 @@
+name: ubuntu
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'release/**'
+      - rrrooommmaaa-7-gha
+
+env:
+  CORES: 2
+  BUILD_MODE: normal
+  GPG_VERSION: stable
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build RPM
+        run: |
+          set -x
+          ./prepare.sh

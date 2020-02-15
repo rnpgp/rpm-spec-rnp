@@ -3,7 +3,6 @@ set -ex
 # See https://github.com/rnpgp/rnp/blob/master/doc/PACKAGING.md
 
 # shellcheck disable=SC1091
-. /usr/local/rpm-specs/setup_env.sh
 
 # build_cmake_package() {
 #   local readonly package_name="${1}"
