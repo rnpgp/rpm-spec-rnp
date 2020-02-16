@@ -23,10 +23,16 @@ set -ex
 #     }
 # }
 
-yum -y install bzip2-devel zlib-devel libcmocka-devel libstdc++-static \
+yum -y install cmake3 make g++ rpmdevtools jq bzip2-devel zlib-devel libcmocka-devel libstdc++-static \
 	botan2-devel json-c-devel
-ln -s /usr/bin/cmake3 /usr/bin/cmake
-ln -s /usr/bin/cpack3 /usr/bin/cpack
+
+if [ ! -f /usr/bin/cmake ]; then
+  ln -s /usr/bin/cmake3 /usr/bin/cmake
+fi
+
+if [ ! -f /usr/bin/cpack ]; then
+  ln -s /usr/bin/cpack3 /usr/bin/cpack
+fi
 
 rpmdev-setuptree
 cd ~/rpmbuild/SOURCES/
