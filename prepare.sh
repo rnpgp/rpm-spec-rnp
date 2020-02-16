@@ -3,6 +3,7 @@ set -ex
 # See https://github.com/rnpgp/rnp/blob/master/doc/PACKAGING.md
 
 # shellcheck disable=SC1091
+. ~/rpm-specs/setup_env.sh
 
 # build_cmake_package() {
 #   local readonly package_name="${1}"
@@ -70,6 +71,6 @@ mv ./*.src.rpm ~/rpmbuild/SRPMS/
 mkdir -p ~/rpmbuild/RPMS/x86_64/
 mv ./*.x86_64.rpm ~/rpmbuild/RPMS/x86_64/
 
-yum install -y ~/rpmbuild/RPMS/x86_64/*.rpm
+yum install -y ~/rpmbuild/RPMS/x86_64/librnp*.rpm
 
 # bash
