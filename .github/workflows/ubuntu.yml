@@ -12,6 +12,7 @@ env:
   CORES: 2
   BUILD_MODE: normal
   GPG_VERSION: stable
+  PROJECT_NAME: rnp
 
 jobs:
   rpm:
@@ -27,6 +28,16 @@ jobs:
           yum install -y git
           git clone --depth 1 https://github.com/riboseinc/rpm-specs ~/rpm-specs
       - name: Build RPM
-        run: |
-          set -x
-          ./prepare.sh
+        env:
+          OUTPUT_DIR: /home/runner/work/rpmbuild
+        run: ./prepare.sh
+      - name: Uploading artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: rpmbuild
+          path: /home/runner/work/rpmbuild
+      - name: Release
+        env:
+          RPM_DIR: /home/runner/work/rpmbuild
+          PRIMARY_RPM: rnp*.rpm
+        run: ./release.sh

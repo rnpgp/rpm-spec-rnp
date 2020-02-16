@@ -1,6 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 set -ex
 # See https://github.com/rnpgp/rnp/blob/master/doc/PACKAGING.md
+
+: "${OUTPUT_DIR:=~/rpmbuild}"
+
+echo "OUTPUT_DIR=$OUTPUT_DIR"
 
 # shellcheck disable=SC1091
 . ~/rpm-specs/setup_env.sh
@@ -36,41 +40,51 @@ if [ ! -f /usr/bin/cpack ]; then
 fi
 
 rpmdev-setuptree
-cd ~/rpmbuild/SOURCES/
+pushd ~/rpmbuild/SOURCES/
 
 # $SOURCE can be 'git' or whatever.
 if [[ "${SOURCE}" = git ]]; then
-	SOURCE_PATH=rnp${RNP_VERSION:+-${RNP_VERSION}}
+	SOURCE_PATH=rnp${VERSION:+-${VERSION}}
 	git clone https://github.com/rnpgp/rnp "${SOURCE_PATH}"
-	cd ~/"rpmbuild/SOURCES/${SOURCE_PATH}"
+	pushd ~/"rpmbuild/SOURCES/${SOURCE_PATH}"
+  if [ -z "$VERSION" ]; then
+    VERSION="$(git tag -l --sort=-v:refname | head -1 | cut -c 2-)"
+  fi
+  git fetch
+  git checkout "${VERSION}"
 else
 	# $VERSION is only for downloading the package archive from a URL.
-        if [ -z "$VERSION" ]; then
-          release_data=$(curl -s -X GET                       \
-            -H "Content-Type: application/json"               \
-            -H "Accept: application/json"                     \
-            https://api.github.com/repos/rnpgp/rnp/tags   \
-            | jq .[0]
-          )
-          VERSION=$(echo "$release_data" | jq -r .name | cut -c 2-)
-        fi
+  if [ -z "$VERSION" ]; then
+    release_data=$(curl -s -X GET                       \
+      -H "Content-Type: application/json"               \
+      -H "Accept: application/json"                     \
+      https://api.github.com/repos/rnpgp/rnp/tags   \
+      | jq .[0]
+    )
+    VERSION=$(echo "$release_data" | jq -r .name | cut -c 2-)
+  fi
 
 	curl -LO "https://github.com/rnpgp/rnp/archive/v${VERSION}.tar.gz"
 	tar -xzf "v${VERSION}.tar.gz"
 
-	cd ~/"rpmbuild/SOURCES/rnp-${VERSION}"
+	pushd ~/"rpmbuild/SOURCES/rnp-${VERSION}"
 fi
 
 cmake -DBUILD_SHARED_LIBS=on -DBUILD_TESTING=off -DCPACK_GENERATOR=RPM .
 cpack -G RPM --config ./CPackSourceConfig.cmake
 make package
 
-mv ./*.src.rpm ~/rpmbuild/SRPMS/
-# mkdir -p ~/rpmbuild/RPMS/noarch/
-# mv *.noarch.rpm ~/rpmbuild/RPMS/noarch/
-# mkdir -p ~/rpmbuild/RPMS/x86_64/
-mv ./*.rpm ~/rpmbuild/RPMS/
+if [ ! -d $OUTPUT_DIR ]; then
+  mkdir $OUTPUT_DIR
+fi
 
-yum install -y ~/rpmbuild/RPMS/*.rpm
+mkdir $OUTPUT_DIR/SRPMS
+mkdir $OUTPUT_DIR/RPMS
 
-# bash
+mv ./*.src.rpm $OUTPUT_DIR/SRPMS/
+mv ./*.rpm $OUTPUT_DIR/RPMS/
+
+yum install -y $OUTPUT_DIR/RPMS/*.rpm
+
+popd
+popd
