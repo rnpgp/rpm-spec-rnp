@@ -68,9 +68,9 @@ make package
 mv ./*.src.rpm ~/rpmbuild/SRPMS/
 # mkdir -p ~/rpmbuild/RPMS/noarch/
 # mv *.noarch.rpm ~/rpmbuild/RPMS/noarch/
-mkdir -p ~/rpmbuild/RPMS/x86_64/
-mv ./*.x86_64.rpm ~/rpmbuild/RPMS/x86_64/
+# mkdir -p ~/rpmbuild/RPMS/x86_64/
+mv ./*.rpm ~/rpmbuild/RPMS/
 
-yum install -y ~/rpmbuild/RPMS/x86_64/librnp*.rpm
+yum install -y ~/rpmbuild/RPMS/*.rpm
 
 # bash

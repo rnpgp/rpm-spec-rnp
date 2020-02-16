@@ -24,6 +24,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: rpm-spec
         run: |
+          yum install -y git
           git clone --depth 1 https://github.com/riboseinc/rpm-specs ~/rpm-specs
       - name: Build RPM
         run: |
