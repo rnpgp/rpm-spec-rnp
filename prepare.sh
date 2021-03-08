@@ -1,8 +1,8 @@
 #!/bin/bash
 set -ex
-# See https://github.com/rnpgp/rnp/blob/master/doc/PACKAGING.md
 
 # shellcheck disable=SC1091
+ls -la /usr/local/rpm-specs/
 . /usr/local/rpm-specs/setup_env.sh
 
 # build_cmake_package() {
