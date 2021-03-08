@@ -63,7 +63,7 @@ mv ./*.src.rpm ~/rpmbuild/SRPMS/
 # mkdir -p ~/rpmbuild/RPMS/noarch/
 # mv *.noarch.rpm ~/rpmbuild/RPMS/noarch/
 mkdir -p ~/rpmbuild/RPMS/x86_64/
-mv ./*.x86_64.rpm ~/rpmbuild/RPMS/x86_64/
+mv ./*.rpm ~/rpmbuild/RPMS/x86_64/
 
 yum install -y ~/rpmbuild/RPMS/x86_64/*.rpm
 
