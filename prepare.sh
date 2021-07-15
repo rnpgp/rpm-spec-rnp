@@ -5,25 +5,6 @@ set -ex
 ls -la /usr/local/rpm-specs/
 . /usr/local/rpm-specs/setup_env.sh
 
-# build_cmake_package() {
-#   local readonly package_name="${1}"
-#
-#   rpmdev-setuptree
-#   yes | cp -a /usr/local/${package-name}/* ~/rpmbuild/SOURCES
-#
-#   # spectool -g -R ${spec_dest}
-#   rpmbuild --define "_topdir <path_to_build_dir>" --rebuild <SRPM_file_name>
-#   rpmbuild ${RPMBUILD_FLAGS:--v -ba} ${spec_dest} || \
-#     {
-#       echo "rpmbuild failed." >&2;
-#       [ $CI ] && exit 1
-#       if [ "$(launched_from)" != "bash" ]; then
-#         echo "Now yielding control to bash." >&2 && \
-#         exec bash
-#       fi
-#     }
-# }
-
 yum -y install bzip2-devel zlib-devel libcmocka-devel libstdc++-static \
 	botan2-devel json-c-devel
 ln -s /usr/bin/cmake3 /usr/bin/cmake
